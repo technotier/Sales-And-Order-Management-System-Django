@@ -1,0 +1,179 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+ <br>
+
+    <div class="row">
+        <div class="col">
+            <div class="col-md">
+                <div class="card text-center text-white  mb-3" id="total-orders">
+                    <div class="card-header">
+                        <h5 class="card-title">Total Orders</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"> <i class="fa fa-shopping-cart"></i> {{ total_orders }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="col-md">
+                <div class="card text-center text-white  mb-3" id="orders-confirmed">
+                    <div class="card-header">
+                        <h5 class="card-title">Order Confirmed</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"> <i class="fa fa-check-circle"></i> {{ order_confirmed }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="col-md">
+                <div class="card text-center text-white  mb-3" id="orders-delivered">
+                    <div class="card-header">
+                        <h5 class="card-title">Order Delivered</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"> <i class="fa fa-check"></i> {{ order_delivered }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="col-md">
+                <div class="card text-center text-white  mb-3" id="orders-pending">
+                    <div class="card-header">
+                        <h5 class="card-title">Order Pending</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"> <i class="fa fa-send"></i> {{ order_pending }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<br>
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form action="" method="get">
+                {{ order_filter_search.form }}
+                <button class="btn btn-primary" type="submit">
+                    Search
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> All Orders
+            </div>
+            <div class="card-body">
+                <div class="col-md-4">
+                    <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_order' %}"> Create New Order <i class="fa fa-plus"></i> </a>
+                </div>
+                <br>
+                <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <td>SL</td>
+                            <td>Ref No.</td>
+                            <td>Customer</td>
+                            <td>Phone</td>
+                            <td>Email</td>
+                            <td>Order Created</td>
+                            <td>Delivery</td>
+                            <td>Payment Type</td>
+                            <td>Order Items</td>
+                            <td>Invoice Total</td>
+                            <td>Order Status</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in customers %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td class="text-uppercase">{{customer.ref_no}}</td>
+                                <td class="text-capitalize">{{customer.name}}</td>
+                                <td>{{customer.phone}}</td>
+                                <td class="text-lowercase">{{customer.email}}</td>
+                                <td>{{ customer.order_created }}</td>
+                                <td class="text-capitalize">{{customer.delivery_date}}</td>
+                                <td>{{customer.payment_type}}</td>
+                                <td class="text-capitalize">{{ customer.get_product}}</td>
+<!--                                {% for product in customer.get_product.values %}-->
+<!--                                    <td class="text-capitalize">{{ product.name }}</td>-->
+<!--                                {% endfor %}-->
+                                <td>BDT: {{ customer.get_total_price }}/-</td> <!-- This is not working -->
+                                {% if customer.order_status == "Confirmed" %}
+                                    <td class="text-center confirm-bg">Confirmed</td>
+                                {% elif customer.order_status == "Delivered" %}
+                                    <td class="text-center delivered-bg">Delivered</td>
+                                {% elif customer.order_status == "Pending" %}
+                                    <td class="text-center pending-bg">Pending</td>
+                                {% else %}
+                                    <td class="text-center cancelled-bg">Cancelled</td>
+                                {% endif %}
+                                <td>
+                                    <a href="{% url 'order_detail' customer.id %}" class="btn btn-sm btn-primary">View</a>
+                                    <a href="{% url 'edit_order' customer.id %}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'delete_order' customer.id%}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<nav aria-label="...">
+    {% if customers.has_other_pages %}
+        <ul class="pagination">
+            {% if customers.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{customers.previous_page_number}}" class="page-link">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+            {% endif %}
+            {% for i in customers.paginator.page_range %}
+                {% if customers.number == i %}
+                    <li class="page-item active">
+                        <a class="page-link">{{ i }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if customers.has_next %}
+                <li class="page-item">
+                    <a href="?page={{customers.next_page_number}}" class="page-link">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</nav>
+{% endblock %}

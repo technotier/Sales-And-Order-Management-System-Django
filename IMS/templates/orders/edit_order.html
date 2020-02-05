@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+    <h1>Edit Order Info</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ edit_order_forms.as_p }}
+        <input type="submit" class="btn btn-primary" value="Save">
+    </form>
+
+{% endblock %}
+

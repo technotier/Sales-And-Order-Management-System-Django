@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Profile Page!</h1>
+    First Name: {{ request.user.first_name }}<br>
+    Last Name: {{ request.user.last_name }}<br>
+    Email: {{ request.user.email }}<br>
+    Username: {{ request.user.username }}<br>
+    Phone: {{ request.user.profile.phone }}<br>
+    Designation: {{ request.user.profile.designation }}<br>
+    Salary: BDT: {{ request.user.profile.salary }}/-<br>
+    <img class="profile-pic" src="{{ request.user.profile.profile_pic.url }}" >
+{% endblock %}
+
+

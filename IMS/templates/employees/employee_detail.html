@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <h5 class="text-capitalize">Employee: {{ single_employee.first_name }} {{ single_employee.last_name }}</h5>
+                <div class="avatar">
+                    <img class="img-avatar" src="{{ single_employee.profile.profile_pic.url }}" alt="Customer Photo">
+                </div>
+                <hr>
+                <a class="btn btn-outline-success  btn-sm btn-block" href="{% url 'edit_employee' single_employee.id %}">Edit Employee</a>
+                <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_employee' single_employee.id %}">Delete Employee</a>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Contact Information</h5>
+                <hr>
+                <p>Phone: +880 {{ single_employee.profile.phone }}</p>
+                <p class="text-lowercase">Email: {{ single_employee.email }}</p>
+                <p class="text-capitalize">Designation: {{ single_employee.profile.designation }}</p>
+                <p>Salary: BDT: {{ single_employee.profile.salary }}/-</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

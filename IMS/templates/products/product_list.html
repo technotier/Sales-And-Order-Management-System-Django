@@ -1,0 +1,148 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="row">
+        <!-- /.col-->
+        <div class="col-sm-6 col-lg-4">
+            <div class="card text-white bg-info">
+                <div class="card-body pb-0">
+                    <div class="text-value"><i class="fa fa-users"></i> {{ total_client_count }}</div>
+                    <div>Total Customers</div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                    <canvas class="chart" id="card-chart2" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-->
+        <div class="col-sm-6 col-lg-4">
+            <div class="card text-white bg-warning">
+                <div class="card-body pb-0">
+                    <div class="text-value"><i class="fa fa-info-circle"></i> {{ total_product_count }}</div>
+                    <div>Total Products</div>
+                </div>
+                <div class="chart-wrapper mt-3" style="height:70px;">
+                    <canvas class="chart" id="card-chart3" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-->
+        <div class="col-sm-6 col-lg-4">
+            <div class="card text-white bg-danger">
+                <div class="card-body pb-0">
+                    <div class="text-value"><i class="fa fa-user"></i> {{ total_employee_count }}</div>
+                    <div>Employees</div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                    <canvas class="chart" id="card-chart4" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-->
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> All Products
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="card card-body">
+                            <form action="" method="get">
+                                {{ product_filter_search.form }}
+                                <button class="btn btn-primary" type="submit">Search</button>
+                          </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="col-md-4">
+                        <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_product' %}"> Add New Product <i class="fa fa-plus"></i> </a>
+                    </div>
+                    <br>
+                    <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                        <tr>
+                            <th>SL</th>
+                            <th>Brand</th>
+                            <th>Description</th>
+                            <th>Packing</th>
+                            <th>Measurement</th>
+                            <th>Price/KG BDT</th>
+                            <th>Origin</th>
+                            <th>In Stock</th>
+                            <th>Action</th>
+                        </tr>
+                        {% if items %}
+                        {% for item in items %}
+                        <tr>
+                            <td>{{ forloop.counter }}.</td>
+                            <td class="text-uppercase">{{ item.brand_name }}</td>
+                            <td class="text-capitalize">{{ item.description }}</td>
+                            <td>{{ item.packing }}</td>
+                            <td>{{ item.measurement }}</td>
+                            <td>{{ item.price }}/-</td>
+                            <td class="text-capitalize">{{ item.origin }}</td>
+                            {% if item.in_stock %}
+                                <td class="btn btn-sm btn-success">Available</td>
+                            {% else %}
+                                <td class="btn btn-sm btn-warning">Stock in Short</td>
+                            {% endif %}
+                            <td>
+                            <a href="{% url 'edit_product' item.id %}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                            <a href="{% url 'delete_product' item.id %}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                            <p>There is No Product Available!</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="...">
+        {% if items.has_other_pages %}
+            <ul class="pagination">
+                {% if items.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{items.previous_page_number}}" class="page-link">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                    </li>
+                {% endif %}
+                {% for i in items.paginator.page_range %}
+                    {% if items.number == i %}
+                        <li class="page-item active">
+                            <a class="page-link">{{ i }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if items.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{items.next_page_number}}" class="page-link">Next</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </nav>
+{% endblock %}
+</div>

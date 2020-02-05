@@ -1,0 +1,110 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 text-center site-logo">
+            <img src="{% static 'dist/img/logo2.png' %}" alt="">
+            <h5>khucrabazar.com</h5>
+        </div>
+        <div class="col-md-3">
+            <tr>
+                <td>01612367130</td>
+                <br>
+                <td>01784334899</td>
+                <br>
+                <td>khucrabazar.com@gmail.com</td>
+            </tr>
+        </div>
+        <div class="col-md-4">
+            <tr>
+                <td>91/A, Chandanpura, Chawkbazar</td>
+                <br>
+                <td>Chattogram, 1215</td>
+            </tr>
+        </div>
+        <div class="col-md-2">
+            <a href="{% url 'invoice_pdf' single_order.id %}" target="_blank" class="btn btn-sm btn-primary">Generate PDF</a>
+        </div>
+    </div>
+    <hr class="border-color">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Billed To:</h3>
+            <br>
+            <tr>
+                <td class="text-capitalize">
+                    <h5>Name: {{ single_order.name }}</h5>
+                </td>
+                 <br>
+<!--                <td>Contact: {{ single_order.phone }}</td>-->
+                <br>
+                <td class="text-lowercase">Email: {{ single_order.email }}</td>
+            </tr>
+        </div>
+        <div class="col-md-4">
+            <h3>Order Info:</h3>
+            <br>
+            <tr>
+                <td class="text-uppercase">Ref. No: {{ single_order.ref_no }}</td>
+                <br>
+                <td class="text-capitalize">Delivery: {{ single_order.delivery_date }}</td>
+                <br>
+                <td>Payment Type: {{ single_order.payment_type }}</td>
+                <br>
+                <td>Order Created: {{ single_order.order_created }}</td>
+            </tr>
+        </div>
+        <div class="col-md-4">
+            <h3>Invoice Total:</h3>
+            <br>
+            <tr>
+                <td>
+                    <h2>BDT: {{ single_order.get_total_price }}/-</h2>
+                </td>
+            </tr>
+        </div>
+    </div>
+    <hr class="border-color">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Order Summary</h3>
+            <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                <thead>
+                    <tr>
+                        <td>SL</td>
+                        <td>Product</td>
+                        <td>Quantity</td>
+                        <td>Measurement</td>
+                        <td>Price (BDT)</td>
+                        <td>Total Amount (BDT)</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sp in single_product %}
+                        <tr>
+                            <td>{{ forloop.counter }}.</td>
+                            <td>{{ sp.name }}</td>
+                            <td>{{ sp.quantity }}</td>
+                            <td>{{ sp.quantity_measurement }}</td>
+                            <td>BDT: {{ sp.price }}/-</td>
+                            <td>
+                                {% if sp.discount_price %}
+                                    BDT: {{ sp.get_total_discount_price }}/-
+                                    <span class="badge badge-warning">
+                                        Saving: BDT: {{ sp.get_amount_saved }}/-
+                                    </span>
+                                {% else %}
+                                    BDT: {{ sp.get_total_price }}/-
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

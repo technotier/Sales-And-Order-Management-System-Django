@@ -1,0 +1,127 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <h5 class="text-capitalize">Customer: {{ single_client.name }}</h5>
+                <hr>
+                <a class="btn btn-outline-success  btn-sm btn-block" href="{% url 'edit_client' single_client.id %}">Update Customer</a>
+                <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_client' single_client.id %}">Delete Customer</a>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Contact Information</h5>
+                <hr>
+                <p>Phone: +880 {{ single_client.phone }}</p>
+                <p class="text-lowercase">Email: {{ single_client.email }}</p>
+                <p class="text-capitalize">Address: {{ single_client.address }}</p>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Total Orders</h5>
+                <hr>
+                <h1 style="text-align: center;padding: 10px">{{ clients_order_count }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <form action="" method="get">
+                    {{ client_order_filter_search.form }}
+                    <button class="btn btn-primary" type="submit">Search</button>
+              </form>
+            </div>
+        </div>
+
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <div class="col-md-3">
+                    <a class="btn btn-primary btn-sm btn-block" href="{% url 'client_order_entry' %}"> Entry Order Info <i class="fa fa-plus"></i> </a>
+                </div>
+                <br>
+               <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                    <tr>
+                        <th>SL</th>
+                        <th>Ref No.</th>
+                        <th>Order Submit</th>
+                        <th>Order Delivered</th>
+                        <th>Invoice Total</th>
+                        <th>Payment Type</th>
+                        <th>Deposit</th>
+                        <th>Due</th>
+                        <th>Remarks</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for cos in client_order_store %}
+                        <tr>
+                            <td>{{ forloop.counter }}.</td>
+                            <td class="text-uppercase">{{ cos.ref_no }}</td>
+                            <td class="text-capitalize">{{ cos.order_submit }}</td>
+                            <td class="text-capitalize">{{ cos.order_delivered }}</td>
+                            <td>BDT: {{ cos.invoice_total }}/-</td>
+                            <td>{{ cos.payment_choices }}</td>
+                            <td>BDT: {{ cos.deposit }}/-</td>
+                            <td>BDT: {{ cos.get_due }}/-</td>
+                            <td class="text-capitalize">{{ cos.remarks }}</td>
+                            <td>
+                                <a href="{% url 'edit_client_order' cos.id %}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                                <a href="{% url 'delete_client_order' cos.id %}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <nav aria-label="...">
+        {% if client_order_store.has_other_pages %}
+            <ul class="pagination">
+                {% if client_order_store.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{client_order_store.previous_page_number}}" class="page-link">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                    </li>
+                {% endif %}
+                {% for i in client_order_store.paginator.page_range %}
+                    {% if client_order_store.number == i %}
+                        <li class="page-item active">
+                            <a class="page-link">{{ i }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if client_order_store.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{client_order_store.next_page_number}}" class="page-link">Next</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </nav>
+{% endblock %}
+

@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col abd-gen-wrapper">
+                <div class="abd-phead">
+                    <h1>Add New</h1>
+                </div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ forms.as_p }}
+                    <input type="submit" class="btn btn-sm btn-primary" value="Create">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

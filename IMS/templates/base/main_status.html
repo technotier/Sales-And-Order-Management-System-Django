@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body pb-0">
+                <div class="text-value"><i class="fa fa-shopping-cart"></i> 31</div>
+                <div>Total Orders</div>
+            </div>
+            <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas class="chart" id="card-chart1" height="70"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card text-white bg-info">
+            <div class="card-body pb-0">
+                <div class="text-value"><i class="fa fa-users"></i> {{ total_client_count }}</div>
+                <div>Total Customers</div>
+            </div>
+            <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas class="chart" id="card-chart2" height="70"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body pb-0">
+                <div class="text-value">{{ total_product_count }}</div>
+                <div>Total Products</div>
+            </div>
+            <div class="chart-wrapper mt-3" style="height:70px;">
+                <canvas class="chart" id="card-chart3" height="70"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body pb-0">
+                <div class="text-value">{{ total_employee_count }}</div>
+                <div>Employees</div>
+            </div>
+            <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas class="chart" id="card-chart4" height="70"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-->
+</div>

@@ -1,0 +1,112 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<br>
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form action="" method="get">
+                {{ entry_order_filter_search.form }}
+                <button class="btn btn-primary" type="submit">
+                    Search
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> All Sales
+            </div>
+            <div class="card-body">
+                <div class="col-md-4">
+                    <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_sales' %}"> Sales Entry <i class="fa fa-plus"></i> </a>
+                </div>
+                <br>
+                <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <td>SL</td>
+                            <td>Ref No.</td>
+                            <td>Customer</td>
+                            <td>Phone</td>
+                            <td>Payment Type</td>
+                            <td>Invoice Total</td>
+                            <td>Deposit</td>
+                            <td>Due</td>
+                            <td>Due Collection</td>
+                            <td>Order Delivered</td>
+                            <td>Remarks</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in sales %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td class="text-uppercase">{{sale.ref_no}}</td>
+                                <td class="text-capitalize">{{sale.customer_name}}</td>
+                                <td class="text-capitalize">{{sale.phone_number}}</td>
+                                <td>{{sale.payment_type}}</td>
+                                <td>BDT: {{sale.invoice_total}}/-</td>
+                                <td>BDT: {{sale.deposit}}/-</td>
+                                <td>BDT: {{sale.get_due}}/-</td>
+                                <td class="text-capitalize">{{sale.due_collection_date}}</td>
+                                <td class="text-capitalize">{{sale.order_delivered}}</td>
+                                <td class="text-capitalize">{{sale.remarks}}</td>
+                                <td>
+                                    <a href="{% url 'edit_sales' sale.id %}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'delete_sales' sale.id %}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="...">
+    {% if sales.has_other_pages %}
+        <ul class="pagination">
+            {% if sales.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{sales.previous_page_number}}" class="page-link">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+            {% endif %}
+            {% for i in sales.paginator.page_range %}
+                {% if sales.number == i %}
+                    <li class="page-item active">
+                        <a class="page-link">{{ i }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if sales.has_next %}
+                <li class="page-item">
+                    <a href="?page={{sales.next_page_number}}" class="page-link">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</nav>
+
+{% endblock %}
+

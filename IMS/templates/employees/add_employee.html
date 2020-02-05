@@ -1,0 +1,12 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>Add Employee</h2>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_forms.as_p }}
+        <button class="btn btn-primary" type="submit">Create Employee</button>
+    </form>
+{% endblock %}
+

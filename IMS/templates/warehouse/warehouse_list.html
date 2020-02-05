@@ -1,0 +1,109 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Warehouse Maintenance
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card card-body">
+                        <form action="" method="get">
+                            {{ warehouse_filter_search.form }}
+                            <button class="btn btn-primary" type="submit">Search</button>
+                      </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="col-md-4">
+                    <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_warehouse' %}"> Add New <i class="fa fa-plus"></i> </a>
+                </div>
+                <br>
+                <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                    <tr>
+                        <th>SL</th>
+                        <th>Category</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Measurement</th>
+                        <th>Buying Price</th>
+                        <th>Selling Price</th>
+                        <th>Profit</th>
+                        <th>Supplier</th>
+                        <th>Contact</th>
+                        <th>In House</th>
+                        <th>Action</th>
+                    </tr>
+                    {% if warehouses %}
+                        {% for warehouse in warehouses %}
+                            <tr>
+                                <td>{{ forloop.counter }}.</td>
+                                <td class="text-capitalize">{{ warehouse.category }}</td>
+                                <td class="text-capitalize">{{ warehouse.product }}</td>
+                                <td>{{ warehouse.qty }}</td>
+                                <td class="text-uppercase">{{ warehouse.measurement }}</td>
+                                <td>BDT: {{ warehouse.original_price }}/-</td>
+                                <td>BDT: {{ warehouse.selling_price }}/-</td>
+                                <td>BDT: {{ warehouse.get_profit }}/-</td>
+                                <td class="text-capitalize">{{ warehouse.supplier_name }}</td>
+                                <td>{{ warehouse.supplier_phone }}</td>
+                                <td class="text-capitalize">{{ warehouse.in_house }}</td>
+                                <td>
+                                    <a href="{% url 'edit_warehouse' warehouse.id %}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'delete_warehouse' warehouse.id %}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <p>There is No Records Available!</p>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="...">
+    {% if warehouses.has_other_pages %}
+        <ul class="pagination">
+            {% if warehouses.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{warehouses.previous_page_number}}" class="page-link">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+            {% endif %}
+            {% for i in warehouses.paginator.page_range %}
+                {% if warehouses.number == i %}
+                    <li class="page-item active">
+                        <a class="page-link">{{ i }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if warehouses.has_next %}
+                <li class="page-item">
+                    <a href="?page={{warehouses.next_page_number}}" class="page-link">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</nav>
+{% endblock %}
+</div>

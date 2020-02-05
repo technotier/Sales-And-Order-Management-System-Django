@@ -1,0 +1,38 @@
+{% load static %}
+<div class="sidebar">
+    <nav class="sidebar-nav">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}"><i class="icon-speedometer"></i> Dashboard</a>
+            </li>
+            {% if request.role == 'Admin' or request.role == 'HR' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'employee_list' %}"><i class="fa fa-user"></i> Employee</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}"><i class="fa fa-info"></i> Products</a>
+            </li>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Regular link</a>
+              <a class="dropdown-item active" href="#">Active link</a>
+              <a class="dropdown-item" href="#">Another link</a>
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'order_list' %}"><i class="fa fa-shopping-cart"></i> Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'sales_list' %}"><i class="fa fa-dollar"></i> Sales</a>
+            </li>
+            {% if request.role == 'Admin' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'warehouse_list' %}"><i class="fa fa-home"></i> Warehouse</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+
+    {% block sidebar %}
+    {% endblock %}
+</div>

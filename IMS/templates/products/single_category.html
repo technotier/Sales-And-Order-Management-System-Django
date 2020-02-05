@@ -1,0 +1,54 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Product List
+            </div>
+            <div class="card-body">
+                <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Brand</th>
+                            <th>Description</th>
+                            <th>Packing (KG)</th>
+                            <th>Measurement</th>
+                            <th>Price (BDT)</th>
+                            <th>Origin</th>
+                            <th>In Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if items %}
+                            {% for item in items %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td class="text-uppercase">{{ item.brand_name }}</td>
+                                    <td class="text-uppercase">{{ item.description }}</td>
+                                    <td class="text-uppercase">{{ item.packing }}</td>
+                                    <td class="text-uppercase">{{ item.measurement }}</td>
+                                    <td class="text-uppercase">BDT: {{ item.price }}/-</td>
+                                    <td class="text-uppercase">{{ item.origin }}</td>
+                                    {% if item.in_stock %}
+                                        <td class="btn btn-sm btn-success">Available</td>
+                                    {% else %}
+                                        <td class="btn btn-sm btn-warning">Stock in Short</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <h2>There is no Product available!</h2>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
